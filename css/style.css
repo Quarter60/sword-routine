@@ -1214,13 +1214,38 @@ textarea.text-input { resize: vertical; min-height: 80px; }
    =================================================== */
 
 /* Theme Definitions */
-body.theme-dashboard { --primary: #7a8c76; --primary-light: #98a894; --accent: #d08c60; }
-body.theme-routines { --primary: #c98c46; --primary-light: #e0ac72; --accent: #6c91c2; }
-body.theme-pomodoro { --primary: #c26a6a; --primary-light: #d88b8b; --accent: #c98c46; }
-body.theme-stats { --primary: #6c91c2; --primary-light: #92b1d9; --accent: #947ebd; }
-body.theme-goals { --primary: #947ebd; --primary-light: #b3a1d4; --accent: #c26a6a; }
-body.theme-journal { --primary: #a37c68; --primary-light: #c29d8a; --accent: #7a8c76; }
-body.theme-settings { --primary: #7b858f; --primary-light: #9aabc2; --accent: #c98c46; }
+body { transition: background-color 0.4s ease, color 0.4s ease; }
+.sidebar { transition: background-color 0.4s ease, transform 0.3s ease; }
+.card.glass { transition: background-color 0.4s ease, border-color 0.4s ease; }
+
+body.theme-dashboard { 
+  --bg: #fdfbf7; --surface: #f4f1ea; --surface2: #e8e4db;
+  --primary: #7a8c76; --primary-light: #98a894; --accent: #d08c60; 
+}
+body.theme-routines { 
+  --bg: #fdfaf6; --surface: #f7efe6; --surface2: #eedcc6;
+  --primary: #c98c46; --primary-light: #e0ac72; --accent: #6c91c2; 
+}
+body.theme-pomodoro { 
+  --bg: #fdf8f8; --surface: #f7eaea; --surface2: #eed5d5;
+  --primary: #c26a6a; --primary-light: #d88b8b; --accent: #c98c46; 
+}
+body.theme-stats { 
+  --bg: #f6f9fc; --surface: #eaf1f8; --surface2: #d6e2f0;
+  --primary: #6c91c2; --primary-light: #92b1d9; --accent: #947ebd; 
+}
+body.theme-goals { 
+  --bg: #faf7fd; --surface: #f1eaf8; --surface2: #e1d3f0;
+  --primary: #947ebd; --primary-light: #b3a1d4; --accent: #c26a6a; 
+}
+body.theme-journal { 
+  --bg: #fcf9f8; --surface: #f5ece8; --surface2: #eadbd5;
+  --primary: #a37c68; --primary-light: #c29d8a; --accent: #7a8c76; 
+}
+body.theme-settings { 
+  --bg: #f8f9fa; --surface: #edf0f2; --surface2: #dee2e6;
+  --primary: #7b858f; --primary-light: #9aabc2; --accent: #c98c46; 
+}
 
 /* Sidebar Navigation Colors */
 .nav-item[data-page="dashboard"] { --nav-color: #7a8c76; --nav-bg: rgba(122, 140, 118, 0.15); }
