@@ -1,0 +1,668 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rutin & Verimlilik Takibi</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  
+
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="app-logo">🌿</div>
+      <div class="app-name">⚔️ Sword<span>Routine</span></div>
+    </div>
+
+    <div class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Ana Sayfa</span>
+      </a>
+      <a href="#" class="nav-item" data-page="routines">
+        <span class="nav-icon">✅</span>
+        <span class="nav-label">Rutinler</span>
+      </a>
+      <a href="#" class="nav-item" data-page="pomodoro">
+        <span class="nav-icon">🍅</span>
+        <span class="nav-label">Pomodoro</span>
+      </a>
+      <a href="#" class="nav-item" data-page="stats">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">İstatistikler</span>
+      </a>
+      <a href="#" class="nav-item" data-page="goals">
+        <span class="nav-icon">🎯</span>
+        <span class="nav-label">Hedefler</span>
+      </a>
+      <a href="#" class="nav-item" data-page="journal">
+        <span class="nav-icon">📔</span>
+        <span class="nav-label">Günlük</span>
+      </a>
+      <a href="#" class="nav-item" data-page="settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Ayarlar</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="streak-badge" id="sidebarStreak">
+        <span>🔥</span>
+        <span id="sidebarStreakCount">0</span>
+        <span>gün</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile header -->
+  <header class="mobile-header">
+    <button class="hamburger" id="hamburger" aria-label="Menüyü aç">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="mobile-title">⚔️ Sword Routine</div>
+    <div class="mobile-streak">🔥 <span id="mobileStreakCount">0</span></div>
+  </header>
+
+  <!-- Overlay for mobile -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Main content area -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ===== DASHBOARD PAGE ===== -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title" id="dashboardGreeting">Merhaba! 👋</h1>
+          <p class="page-subtitle" id="dashboardDate">Yükleniyor...</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="App.navigateTo('routines')">Rutinlere Git →</button>
+        </div>
+      </div>
+
+      <!-- Quick Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card glass">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dashStreak">0</div>
+            <div class="stat-label">Günlük Seri</div>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dashCompletion">0%</div>
+            <div class="stat-label">Bugün Tamamlanan</div>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon">🍅</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dashPomodoro">0</div>
+            <div class="stat-label">Bugün Pomodoro</div>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-info">
+            <div class="stat-value" id="dashGoals">0</div>
+            <div class="stat-label">Aktif Hedef</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="dashboard-grid">
+
+        <!-- Today's Routines -->
+        <div class="card glass" id="dashRoutinesCard">
+          <div class="card-header">
+            <h2>📋 Bugünün Rutinleri</h2>
+            <button class="btn-icon" onclick="App.navigateTo('routines')" title="Tümünü gör">→</button>
+          </div>
+          <div class="card-body" id="dashRoutinesList">
+            <p class="empty-state">Henüz rutin eklenmedi.</p>
+          </div>
+        </div>
+
+        <!-- Active Pomodoro -->
+        <div class="card glass" id="dashPomodoroCard">
+          <div class="card-header">
+            <h2>🍅 Pomodoro</h2>
+            <button class="btn-icon" onclick="App.navigateTo('pomodoro')" title="Pomodoro'ya git">→</button>
+          </div>
+          <div class="card-body">
+            <div class="dash-pomodoro">
+              <div class="dash-timer-display" id="dashTimerDisplay">25:00</div>
+              <div class="dash-timer-mode" id="dashTimerMode">Çalışma</div>
+              <div class="dash-timer-controls">
+                <button class="btn btn-primary" onclick="Pomodoro.toggle()">▶ Başlat</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Quote -->
+        <div class="card glass quote-card">
+          <div class="card-header">
+            <h2>💬 Günün Sözü</h2>
+          </div>
+          <div class="card-body">
+            <blockquote class="quote-text" id="dashQuote">Yükleniyor...</blockquote>
+            <p class="quote-author" id="dashQuoteAuthor"></p>
+          </div>
+        </div>
+
+        <!-- Goals Summary -->
+        <div class="card glass">
+          <div class="card-header">
+            <h2>🎯 Hedefler</h2>
+            <button class="btn-icon" onclick="App.navigateTo('goals')" title="Tümünü gör">→</button>
+          </div>
+          <div class="card-body" id="dashGoalsList">
+            <p class="empty-state">Henüz hedef eklenmedi.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Idle suggestion panel -->
+      <div class="idle-panel glass hidden" id="idlePanel">
+        <button class="idle-close" id="idleClose">✕</button>
+        <div class="idle-icon">💡</div>
+        <p class="idle-title">Boş durma!</p>
+        <p class="idle-suggestion" id="idleSuggestion">Su iç!</p>
+        <button class="btn btn-accent" id="idleNext">Başka öneri →</button>
+      </div>
+    </section>
+
+    <!-- ===== ROUTINES PAGE ===== -->
+    <section class="page" id="page-routines">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">✅ Rutinler</h1>
+          <p class="page-subtitle">Günlük rutinlerini yönet</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="RoutineManager.openAddModal()">+ Rutin Ekle</button>
+        </div>
+      </div>
+
+      <!-- Category Tabs -->
+      <div class="tab-bar" id="routineTabs">
+        <button class="tab-btn active" data-cat="all">🌟 Tümü</button>
+        <button class="tab-btn" data-cat="sabah">🌅 Sabah</button>
+        <button class="tab-btn" data-cat="öğle">☀️ Öğle</button>
+        <button class="tab-btn" data-cat="akşam">🌆 Akşam</button>
+        <button class="tab-btn" data-cat="gece">🌙 Gece</button>
+      </div>
+
+      <!-- Routines List -->
+      <div class="routines-container" id="routinesList">
+        <p class="empty-state">Henüz rutin eklenmedi. Başlamak için "Rutin Ekle" butonuna tıkla!</p>
+      </div>
+    </section>
+
+    <!-- ===== POMODORO PAGE ===== -->
+    <section class="page" id="page-pomodoro">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">🍅 Pomodoro Timer</h1>
+          <p class="page-subtitle">Odaklan, mola ver, tekrarla</p>
+        </div>
+      </div>
+
+      <div class="pomodoro-layout">
+
+        <!-- Timer Card -->
+        <div class="card glass pomodoro-card">
+          <!-- Mode Tabs -->
+          <div class="pomo-mode-tabs">
+            <button class="pomo-tab active" data-mode="work">Çalışma</button>
+            <button class="pomo-tab" data-mode="short">Kısa Mola</button>
+            <button class="pomo-tab" data-mode="long">Uzun Mola</button>
+          </div>
+
+          <!-- Timer Circle -->
+          <div class="timer-circle-container">
+            <svg class="timer-svg" viewBox="0 0 200 200">
+              <circle class="timer-bg-circle" cx="100" cy="100" r="90"/>
+              <circle class="timer-progress-circle" cx="100" cy="100" r="90" id="timerProgressCircle"/>
+            </svg>
+            <div class="timer-center">
+              <div class="timer-display" id="pomodoroDisplay">25:00</div>
+              <div class="timer-mode-label" id="pomodoroModeLabel">Çalışma</div>
+              <div class="timer-session" id="pomodoroSession">Oturum 1</div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="pomo-controls">
+            <button class="pomo-btn pomo-btn-secondary" onclick="Pomodoro.reset()" title="Sıfırla">↺</button>
+            <button class="pomo-btn pomo-btn-primary" id="pomodoroToggleBtn" onclick="Pomodoro.toggle()">▶</button>
+            <button class="pomo-btn pomo-btn-secondary" onclick="Pomodoro.skip()" title="Geç">⏭</button>
+          </div>
+
+          <!-- Auto-start toggle -->
+          <div class="pomo-option">
+            <label class="toggle-label">
+              <input type="checkbox" id="autoStartToggle" />
+              <span class="toggle-switch"></span>
+              <span>Otomatik başlat</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Stats & Log -->
+        <div class="pomodoro-side">
+          <!-- Today's count -->
+          <div class="card glass pomo-stat-card">
+            <h3>📊 Bugünün İstatistikleri</h3>
+            <div class="pomo-stats-grid">
+              <div class="pomo-stat">
+                <div class="pomo-stat-value" id="todayPomodoros">0</div>
+                <div class="pomo-stat-label">Pomodoro</div>
+              </div>
+              <div class="pomo-stat">
+                <div class="pomo-stat-value" id="todayFocusTime">0 dk</div>
+                <div class="pomo-stat-label">Odak Süresi</div>
+              </div>
+              <div class="pomo-stat">
+                <div class="pomo-stat-value" id="todayBreaks">0</div>
+                <div class="pomo-stat-label">Mola</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duration Settings -->
+          <div class="card glass">
+            <h3>⚙️ Süre Ayarları</h3>
+            <div class="duration-settings">
+              <div class="duration-item">
+                <label>Çalışma (dk)</label>
+                <input type="number" id="workDuration" min="1" max="60" value="25" class="duration-input"/>
+              </div>
+              <div class="duration-item">
+                <label>Kısa Mola (dk)</label>
+                <input type="number" id="shortBreakDuration" min="1" max="30" value="5" class="duration-input"/>
+              </div>
+              <div class="duration-item">
+                <label>Uzun Mola (dk)</label>
+                <input type="number" id="longBreakDuration" min="1" max="60" value="15" class="duration-input"/>
+              </div>
+              <button class="btn btn-primary" style="width:100%" onclick="Pomodoro.applySettings()">Uygula</button>
+            </div>
+          </div>
+
+          <!-- Session Log -->
+          <div class="card glass">
+            <h3>📝 Oturum Geçmişi</h3>
+            <div class="session-log" id="sessionLog">
+              <p class="empty-state">Henüz oturum yok.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== STATS PAGE ===== -->
+    <section class="page" id="page-stats">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">📊 İstatistikler</h1>
+          <p class="page-subtitle">İlerleme ve performans verilerini takip et</p>
+        </div>
+      </div>
+
+      <!-- Main Stats -->
+      <div class="stats-row stats-row-3">
+        <div class="stat-card glass big-stat">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-info">
+            <div class="stat-value" id="statsCurrentStreak">0</div>
+            <div class="stat-label">Güncel Seri</div>
+          </div>
+        </div>
+        <div class="stat-card glass big-stat">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-info">
+            <div class="stat-value" id="statsBestStreak">0</div>
+            <div class="stat-label">En İyi Seri</div>
+          </div>
+        </div>
+        <div class="stat-card glass big-stat">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-value" id="statsTotalCompleted">0</div>
+            <div class="stat-label">Toplam Tamamlanan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heatmap -->
+      <div class="card glass">
+        <div class="card-header">
+          <h2>📅 Haftalık Tamamlanma Haritası</h2>
+        </div>
+        <div class="card-body">
+          <div class="heatmap-container" id="heatmapContainer"></div>
+          <div class="heatmap-legend">
+            <span>Az</span>
+            <div class="legend-squares">
+              <div class="legend-sq" style="background: var(--surface2)"></div>
+              <div class="legend-sq" style="background: #3d5c3d"></div>
+              <div class="legend-sq" style="background: #4d7a4d"></div>
+              <div class="legend-sq" style="background: #6b8f6b"></div>
+              <div class="legend-sq" style="background: #8aad8a"></div>
+            </div>
+            <span>Çok</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Routine Stats -->
+      <div class="card glass">
+        <div class="card-header">
+          <h2>📋 Rutin Bazında İstatistikler</h2>
+        </div>
+        <div class="card-body" id="routineStatsContainer">
+          <p class="empty-state">Henüz rutin eklenmedi.</p>
+        </div>
+      </div>
+
+      <!-- Pomodoro & Goals -->
+      <div class="dashboard-grid">
+        <div class="card glass">
+          <div class="card-header"><h2>🍅 Bu Hafta Pomodoro</h2></div>
+          <div class="card-body">
+            <div class="weekly-pomodoro" id="weeklyPomodoro"></div>
+          </div>
+        </div>
+        <div class="card glass">
+          <div class="card-header"><h2>🎯 Hedef İlerleme</h2></div>
+          <div class="card-body" id="statsGoalProgress">
+            <p class="empty-state">Henüz hedef eklenmedi.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GOALS PAGE ===== -->
+    <section class="page" id="page-goals">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">🎯 Hedefler</h1>
+          <p class="page-subtitle">Büyük hedefleri küçük adımlarla gerçekleştir</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" onclick="GoalManager.openAddModal()">+ Hedef Ekle</button>
+        </div>
+      </div>
+
+      <div class="goals-filter">
+        <button class="tab-btn active" data-filter="all">Tümü</button>
+        <button class="tab-btn" data-filter="active">Aktif</button>
+        <button class="tab-btn" data-filter="completed">Tamamlanan</button>
+      </div>
+
+      <div class="goals-grid" id="goalsList">
+        <p class="empty-state">Henüz hedef eklenmedi.</p>
+      </div>
+    </section>
+
+    <!-- ===== JOURNAL PAGE ===== -->
+    <section class="page" id="page-journal">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">📔 Günlük</h1>
+          <p class="page-subtitle">Düşüncelerini ve anlarını kaydet</p>
+        </div>
+      </div>
+
+      <div class="journal-layout">
+
+        <!-- Editor -->
+        <div class="card glass journal-editor-card">
+          <div class="journal-date-nav">
+            <button class="btn-icon" onclick="Journal.prevDay()">‹</button>
+            <span class="journal-date-display" id="journalDateDisplay">Bugün</span>
+            <button class="btn-icon" onclick="Journal.nextDay()" id="journalNextBtn" disabled>›</button>
+          </div>
+
+          <div class="mood-selector">
+            <p class="mood-label">Bugün nasıl hissediyorsun?</p>
+            <div class="mood-options" id="moodOptions">
+              <button class="mood-btn" data-mood="1" title="Çok kötü">😫</button>
+              <button class="mood-btn" data-mood="2" title="Kötü">😕</button>
+              <button class="mood-btn" data-mood="3" title="Normal">😐</button>
+              <button class="mood-btn" data-mood="4" title="İyi">🙂</button>
+              <button class="mood-btn" data-mood="5" title="Harika">😄</button>
+            </div>
+          </div>
+
+          <textarea class="journal-textarea" id="journalText" placeholder="Bugün neler oldu? Ne düşündün? Ne hissettin?..."></textarea>
+          <div class="journal-footer">
+            <span class="word-count" id="wordCount">0 kelime</span>
+            <span class="save-status" id="saveStatus">Kaydedildi ✓</span>
+          </div>
+        </div>
+
+        <!-- Past Entries -->
+        <div class="journal-entries-panel">
+          <div class="card glass">
+            <div class="card-header">
+              <h3>📚 Geçmiş Yazılar</h3>
+            </div>
+            <div class="card-body" id="journalEntriesList">
+              <p class="empty-state">Henüz yazı yok.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <section class="page" id="page-settings">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">⚙️ Ayarlar</h1>
+          <p class="page-subtitle">Uygulama ayarlarını kişiselleştir</p>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+
+        <!-- Notifications -->
+        <div class="card glass">
+          <div class="card-header"><h2>🔔 Bildirimler</h2></div>
+          <div class="card-body">
+            <div class="setting-item">
+              <div class="setting-info">
+                <div class="setting-name">Tarayıcı Bildirimleri</div>
+                <div class="setting-desc">Rutin hatırlatmaları ve Pomodoro bildirimleri</div>
+              </div>
+              <label class="toggle-label">
+                <input type="checkbox" id="notifToggle" onchange="NotificationManager.toggle(this.checked)"/>
+                <span class="toggle-switch"></span>
+              </label>
+            </div>
+            <button class="btn btn-secondary" style="margin-top:12px" onclick="NotificationManager.requestPermission()">
+              İzin İste
+            </button>
+          </div>
+        </div>
+
+        <!-- Idle Suggestions -->
+        <div class="card glass">
+          <div class="card-header"><h2>💡 Boş Durma Önerileri</h2></div>
+          <div class="card-body">
+            <div class="idle-suggestion-list" id="idleSuggestionList"></div>
+            <div class="add-suggestion-form">
+              <input type="text" id="newSuggestionInput" placeholder="Yeni öneri ekle..." class="text-input"/>
+              <button class="btn btn-primary" onclick="IdleManager.addCustomSuggestion()">Ekle</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data -->
+        <div class="card glass">
+          <div class="card-header"><h2>💾 Veri Yönetimi</h2></div>
+          <div class="card-body settings-actions">
+            <button class="btn btn-secondary" onclick="DataManager.exportData()">
+              📥 Veriyi Dışa Aktar (JSON)
+            </button>
+            <label class="btn btn-secondary" style="cursor:pointer">
+              📤 Veriyi İçe Aktar (JSON)
+              <input type="file" accept=".json" style="display:none" onchange="DataManager.importData(event)"/>
+            </label>
+            <button class="btn btn-danger" onclick="DataManager.confirmReset()">
+              🗑️ Tüm Veriyi Sıfırla
+            </button>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="card glass">
+          <div class="card-header"><h2>ℹ️ Hakkında</h2></div>
+          <div class="card-body">
+            <p style="color: var(--text-muted); line-height: 1.7;">
+              <strong style="color: var(--text)">Sword Routine</strong> — Kişisel verimlilik ve rutin takip uygulaması.<br/>
+              Tüm verileriniz yerel olarak tarayıcınızda saklanır. Hiçbir veri sunucuya gönderilmez.<br/><br/>
+              <span style="color: var(--accent)">Sürüm 1.0.0</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- Add/Edit Routine Modal -->
+  <div class="modal-backdrop hidden" id="routineModal">
+    <div class="modal glass">
+      <div class="modal-header">
+        <h2 id="routineModalTitle">Rutin Ekle</h2>
+        <button class="modal-close" onclick="RoutineManager.closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="routineEditId"/>
+        <div class="form-group">
+          <label>Emoji İkonu</label>
+          <div class="emoji-picker" id="emojiPicker"></div>
+          <input type="text" id="routineEmoji" class="text-input" placeholder="veya emoji girin" maxlength="2"/>
+        </div>
+        <div class="form-group">
+          <label>Rutin Adı *</label>
+          <input type="text" id="routineName" class="text-input" placeholder="ör: Sabah meditasyonu"/>
+        </div>
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="routineCategory" class="select-input">
+            <option value="sabah">🌅 Sabah</option>
+            <option value="öğle">☀️ Öğle</option>
+            <option value="akşam">🌆 Akşam</option>
+            <option value="gece">🌙 Gece</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Günler</label>
+          <div class="day-picker" id="dayPicker">
+            <button class="day-btn active" data-day="0">Pzt</button>
+            <button class="day-btn active" data-day="1">Sal</button>
+            <button class="day-btn active" data-day="2">Çar</button>
+            <button class="day-btn active" data-day="3">Per</button>
+            <button class="day-btn active" data-day="4">Cum</button>
+            <button class="day-btn active" data-day="5">Cmt</button>
+            <button class="day-btn active" data-day="6">Paz</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="RoutineManager.closeModal()">İptal</button>
+        <button class="btn btn-primary" onclick="RoutineManager.saveRoutine()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Goal Modal -->
+  <div class="modal-backdrop hidden" id="goalModal">
+    <div class="modal glass">
+      <div class="modal-header">
+        <h2 id="goalModalTitle">Hedef Ekle</h2>
+        <button class="modal-close" onclick="GoalManager.closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="goalEditId"/>
+        <div class="form-group">
+          <label>Başlık *</label>
+          <input type="text" id="goalTitle" class="text-input" placeholder="ör: 10 kitap oku"/>
+        </div>
+        <div class="form-group">
+          <label>Açıklama</label>
+          <textarea id="goalDesc" class="text-input" rows="3" placeholder="Hedefini detaylandır..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Kategori</label>
+          <input type="text" id="goalCategory" class="text-input" placeholder="ör: Kişisel Gelişim"/>
+        </div>
+        <div class="form-group">
+          <label>Hedef Tarihi</label>
+          <input type="date" id="goalTargetDate" class="text-input"/>
+        </div>
+        <div class="form-group">
+          <label>İlerleme: <span id="goalProgressLabel">0</span>%</label>
+          <input type="range" id="goalProgress" min="0" max="100" value="0" class="range-input"
+                 oninput="document.getElementById('goalProgressLabel').textContent = this.value"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="GoalManager.closeModal()">İptal</button>
+        <button class="btn btn-primary" onclick="GoalManager.saveGoal()">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div class="modal-backdrop hidden" id="confirmModal">
+    <div class="modal glass modal-sm">
+      <div class="modal-header">
+        <h2 id="confirmTitle">Emin misin?</h2>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Bu işlemi geri alamazsın.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="App.closeConfirm()">İptal</button>
+        <button class="btn btn-danger" id="confirmOkBtn">Evet, devam et</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti Container -->
+  <div id="confettiContainer" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;"></div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/quotes.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/idle.js"></script>
+  <script src="js/pomodoro.js"></script>
+  <script src="js/routines.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/journal.js"></script>
+  <script src="js/goals.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
