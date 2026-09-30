@@ -114,6 +114,9 @@ const App = (() => {
     // Update URL hash for bookmarking (optional)
     history.replaceState(null, '', '#' + page);
 
+    // Apply theme class to body
+    document.body.className = 'theme-' + page;
+
     // Refresh page-specific content
     if (page === 'dashboard') {
       updateDashboardStats();

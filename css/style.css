@@ -116,11 +116,7 @@ body {
   background: var(--surface2);
 }
 
-.nav-item.active {
-  color: var(--text);
-  background: rgba(122, 140, 118, 0.15);
-  border-left: 3px solid var(--primary-light);
-}
+
 
 .nav-icon { font-size: 18px; }
 .nav-label { letter-spacing: 0.2px; }
@@ -1211,4 +1207,65 @@ textarea.text-input { resize: vertical; min-height: 80px; }
   .stats-row { grid-template-columns: 1fr 1fr; }
   .page-title { font-size: 20px; }
   .modal { max-width: 100%; }
+}
+
+/* ===================================================
+   PAGE-SPECIFIC THEMES (Dynamic Colors)
+   =================================================== */
+
+/* Theme Definitions */
+body.theme-dashboard { --primary: #7a8c76; --primary-light: #98a894; --accent: #d08c60; }
+body.theme-routines { --primary: #c98c46; --primary-light: #e0ac72; --accent: #6c91c2; }
+body.theme-pomodoro { --primary: #c26a6a; --primary-light: #d88b8b; --accent: #c98c46; }
+body.theme-stats { --primary: #6c91c2; --primary-light: #92b1d9; --accent: #947ebd; }
+body.theme-goals { --primary: #947ebd; --primary-light: #b3a1d4; --accent: #c26a6a; }
+body.theme-journal { --primary: #a37c68; --primary-light: #c29d8a; --accent: #7a8c76; }
+body.theme-settings { --primary: #7b858f; --primary-light: #9aabc2; --accent: #c98c46; }
+
+/* Sidebar Navigation Colors */
+.nav-item[data-page="dashboard"] { --nav-color: #7a8c76; --nav-bg: rgba(122, 140, 118, 0.15); }
+.nav-item[data-page="routines"] { --nav-color: #c98c46; --nav-bg: rgba(201, 140, 70, 0.15); }
+.nav-item[data-page="pomodoro"] { --nav-color: #c26a6a; --nav-bg: rgba(194, 106, 106, 0.15); }
+.nav-item[data-page="stats"] { --nav-color: #6c91c2; --nav-bg: rgba(108, 145, 194, 0.15); }
+.nav-item[data-page="goals"] { --nav-color: #947ebd; --nav-bg: rgba(148, 126, 189, 0.15); }
+.nav-item[data-page="journal"] { --nav-color: #a37c68; --nav-bg: rgba(163, 124, 104, 0.15); }
+.nav-item[data-page="settings"] { --nav-color: #7b858f; --nav-bg: rgba(123, 133, 143, 0.15); }
+
+/* Apply Colors to Nav Items */
+.nav-item .nav-icon {
+  color: var(--nav-color);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-item:hover .nav-icon {
+  transform: scale(1.15);
+}
+
+.nav-item.active {
+  background: var(--nav-bg) !important;
+  border-left: 3px solid var(--nav-color) !important;
+  color: var(--nav-color) !important;
+  font-weight: 600;
+}
+
+/* Colorful Dashboard Enhancements */
+body.theme-dashboard .stat-card:nth-child(1) .stat-icon { color: #c26a6a; } /* Streak (Red/Fire) */
+body.theme-dashboard .stat-card:nth-child(2) .stat-icon { color: #7a8c76; } /* Completed (Green) */
+body.theme-dashboard .stat-card:nth-child(3) .stat-icon { color: #c26a6a; } /* Pomodoro (Red) */
+body.theme-dashboard .stat-card:nth-child(4) .stat-icon { color: #947ebd; } /* Goals (Purple) */
+
+body.theme-dashboard .card:nth-child(1) .card-header { border-bottom: 2px solid #c98c46; } /* Routines */
+body.theme-dashboard .card:nth-child(2) .card-header { border-bottom: 2px solid #c26a6a; } /* Pomodoro */
+body.theme-dashboard .card:nth-child(3) .card-header { border-bottom: 2px solid #7a8c76; } /* Quotes */
+body.theme-dashboard .card:nth-child(4) .card-header { border-bottom: 2px solid #947ebd; } /* Goals */
+
+/* Dashboard Quote Accent */
+body.theme-dashboard .quote-card { border-left-color: #7a8c76 !important; }
+
+/* Dashboard Greeting Color */
+body.theme-dashboard .page-title {
+  background: linear-gradient(45deg, #7a8c76, #c98c46);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
